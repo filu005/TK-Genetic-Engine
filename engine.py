@@ -35,10 +35,6 @@ class Engine:
 			fitness.append(fit)
 		return fitness
 
-	def generate(self, random, size):
-		return [random.uniform(-30., 30.) for i in xrange(size)]
-
-
 	def initializeF(self, function):
 		if function=="Rosenbrock":
 			function="(1-x)+100*(y-x**)*(y-x**)"
@@ -51,93 +47,23 @@ class Engine:
 
 		self.initialize(function, xrange, yrange)
 
-
 	def initialize(self, function, xrange, yrange):
 		rand = Random()
 		rand.seed(int(time()))
 		self.setfunction(function, xrange, yrange)
 
+from springpython.context import ApplicationContext
 
-	def evaluation():
-		print("Ocena osobnikow")
+from GeneticComponents import *
 
-		for genotype in population:
-			x=genotype.value
-			genotype.setfitness(eval(function))
+if __name__ == "__main__":
+	applicationContext = ApplicationContext(GeneticComponents()) # albo XMLConfig("GeneticComponents.xml")
 
+	generator = applicationContext.get_object("generator")
+	population = generator.generate()
+	operators = applicationContext.get_objects_by_type(Operator, False)
+	stop_condition = applicationContext.get_object("stop_condition")
 
-	def best(population):
-		pos=0
-		bestPos=0
-		best=population[0].getvalue()
-
-		for genotype in population:
-			if genotype.getvalue()<best:
-				best=genotype.getvalue()
-				bestPos=pos
-
-			pos=pos+1
-
-		return population[bestPos]
-
-
-	def tournament(self):
-		newPopulation=[]
-		random = Random()
-
-		for x in xrange(0,int(population/3)):
-			tempPopulation=[]
-			for y in xrange(0,int(population/3)):
-				tempPopulation.append(population[random.randint(0, len(population))])
-			newPopulation.append(best(tempPopulation))
-
-		population=newPopulation
-
-
-	def min(self):
-		min=None
-		for genotype in population:
-			if min>genotype.getvalue():
-				min=genotype.getvalue()
-		return min
-
-
-	def sum(self):
-		sum=0
-		for genotype in population:
-			if min>genotype.getvalue():
-				sum=sum+genotype.getvalue()
-		return sum
-
-
-
-	def roulette(self):
-		random = Random()
-		worstValue=min(self)
-		sumValue=self.sum()
-
-		for genotype in population:
-			if random.uniform(0, 1)>(worstValue-genotype.getvalue()+1)/(sumValue+1):
-				self.population.remove(genotype)
-
-
-	def selection(type):
-
-		print("Selekcja")
-		if type=="tournament":
-			self.tournament()
-		elif type=="roulette":
-			self.roulette()
-
-
-	def crossover(p):
-		print("Krzyzwanie")
-
-	def mutation(p):
-		print("Mutacja")
-
-
-
-engine=Engine()
-engine.initialize("x+2", 10, 10)
-
+	while stop_condition.stop(population) == False:
+		for it in operators:
+			operators[it].operate(population)

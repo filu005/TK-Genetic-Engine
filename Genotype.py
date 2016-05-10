@@ -3,14 +3,14 @@ class Genotype:
     self.value
 
 
-    def setfitness(self, fitness):
+    def set_fitness(self, fitness):
         self.fitness=fitness
 
-    def getfitness(self, fitness):
+    def get_fitness(self, fitness):
         return fitness
 
-    def getvalue(self):
+    def get_value(self):
         return self.value
 
-    def setvalue(self, fitness):
+    def set_value(self, fitness):
         self.value=value
