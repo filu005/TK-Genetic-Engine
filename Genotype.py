@@ -1,16 +1,17 @@
 class Genotype:
-    self.fitness
-    self.value
 
+    def __init__(self, value):
+        self.fitness=None
+        self.value=value
 
-    def set_fitness(self, fitness):
+    def setFitness(self, fitness):
         self.fitness=fitness
 
-    def get_fitness(self, fitness):
-        return fitness
+    def getFitness(self):
+        return self.fitness
 
-    def get_value(self):
+    def getValue(self):
         return self.value
 
-    def set_value(self, fitness):
+    def setValue(self, fitness):
         self.value=value

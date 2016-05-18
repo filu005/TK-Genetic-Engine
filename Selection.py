@@ -6,52 +6,57 @@ class Selection(Operator):
 	def operate(self, population):
 		print "selection" + " in population " + population
 
-	def roulette(self):
-		random = Random()
-		worstValue=min(self)
-		sumValue=self.sum()
-
-		for genotype in population:
-			if random.uniform(0, 1)>(worstValue-genotype.getvalue()+1)/(sumValue+1):
-				self.population.remove(genotype)
-
-	def tournament(self):
-		newPopulation=[]
-		random = Random()
-
-		for x in xrange(0,int(population/3)):
-			tempPopulation=[]
-			for y in xrange(0,int(population/3)):
-				tempPopulation.append(population[random.randint(0, len(population))])
-			newPopulation.append(best(tempPopulation))
-
-		population=newPopulation
-
-	def best(population):
+	def best(self, population):
 		pos=0
 		bestPos=0
-		best=population[0].getvalue()
+		best=population[0].getValue()
 
 		for genotype in population:
-			if genotype.getvalue()<best:
-				best=genotype.getvalue()
+			if genotype.getValue()<best:
+				best=genotype.getValue()
 				bestPos=pos
 
 			pos=pos+1
 
 		return population[bestPos]
 
-	def min(self):
+	def minimum(self, population):
 		min=None
-		for genotype in population:
-			if min>genotype.getvalue():
-				min=genotype.getvalue()
+		for genotype in population.getGenotypes():
+			if min>genotype.getFitness() or min==None:
+				min=genotype.getFitness()
 		return min
 
 
-	def sum(self):
+	def sum(self, population):
 		sum=0
-		for genotype in population:
-			if min>genotype.getvalue():
-				sum=sum+genotype.getvalue()
+		for genotype in population.getGenotypes():
+			if min>genotype.getValue():
+				sum=sum+genotype.getValue()
 		return sum
+
+	def roulette(self, population):
+		print "Selekcja ruletkowa"
+		random = Random()
+		worstValue=self.minimum(population)
+		sumValue=self.sum(population)
+
+		for genotype in population.getGenotypes():
+			if random.uniform(0, 1)>(worstValue-genotype.getFitness()+1)/(sumValue+1):
+				population.getGenotypes().remove(genotype)
+		print "Rozmiar po selekcji ruletkowej: "+str(len(population.getGenotypes()))
+
+
+	def tournament(self, population, newSize, probeSize):
+		newPopulation=[]
+		random = Random()
+
+		for x in xrange(0,newSize):
+			tempPopulation=[]
+			for y in xrange(0,probeSize):
+				tempPopulation.append(population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)])
+			newPopulation.append(self.best(tempPopulation))
+
+		population.setGenotypes(newPopulation)
+		print "Rozmiar po selekcji turniejowej: "+str(len(population.getGenotypes()))
+

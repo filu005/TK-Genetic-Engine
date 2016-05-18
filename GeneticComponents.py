@@ -8,6 +8,7 @@ from Evaluation import *
 from Selection import *
 from Crossover import *
 from Mutation import *
+from Population import *
 
 class GeneticComponents(PythonConfig):
 	def __init__(self):
@@ -36,3 +37,7 @@ class GeneticComponents(PythonConfig):
 	@Object
 	def mutation(self):
 		return Mutation()
+
+	@Object
+	def population(self):
+		return Population()

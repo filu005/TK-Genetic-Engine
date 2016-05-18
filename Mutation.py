@@ -1,5 +1,5 @@
 from Operator import *
 
 class Mutation(Operator):
-	def operate(self, population):
+	def mutation(self, population, prob):
 		print "mutation"
