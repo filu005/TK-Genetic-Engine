@@ -13,5 +13,5 @@ class Genotype:
     def getValue(self):
         return self.value
 
-    def setValue(self, fitness):
+    def setValue(self, value):
         self.value=value

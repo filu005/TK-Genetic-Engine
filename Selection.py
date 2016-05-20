@@ -9,11 +9,11 @@ class Selection(Operator):
 	def best(self, population):
 		pos=0
 		bestPos=0
-		best=population[0].getValue()
+		best=population[0].getFitness()
 
 		for genotype in population:
-			if genotype.getValue()<best:
-				best=genotype.getValue()
+			if genotype.getFitness()<best:
+				best=genotype.getFitness()
 				bestPos=pos
 
 			pos=pos+1
@@ -31,8 +31,8 @@ class Selection(Operator):
 	def sum(self, population):
 		sum=0
 		for genotype in population.getGenotypes():
-			if min>genotype.getValue():
-				sum=sum+genotype.getValue()
+			if min>genotype.getFitness():
+				sum=sum+genotype.getFitness()
 		return sum
 
 	def roulette(self, population):
@@ -40,23 +40,31 @@ class Selection(Operator):
 		random = Random()
 		worstValue=self.minimum(population)
 		sumValue=self.sum(population)
-
+		selectionPopulation=[]
+        
 		for genotype in population.getGenotypes():
-			if random.uniform(0, 1)>(worstValue-genotype.getFitness()+1)/(sumValue+1):
-				population.getGenotypes().remove(genotype)
-		print "Rozmiar po selekcji ruletkowej: "+str(len(population.getGenotypes()))
-
-
+			if random.uniform(0, 1)<=(worstValue-genotype.getFitness()+1)/(sumValue+1):
+				selectionPopulation.append(genotype)
+		return selectionPopulation
+                
+                
 	def tournament(self, population, newSize, probeSize):
-		newPopulation=[]
+		selectionPopulation=[]
 		random = Random()
+        
+		if (newSize>=len(population.getGenotypes())):
+			return population.getGenotypes()
 
 		for x in xrange(0,newSize):
 			tempPopulation=[]
 			for y in xrange(0,probeSize):
-				tempPopulation.append(population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)])
-			newPopulation.append(self.best(tempPopulation))
+				newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
+				while newGen in selectionPopulation:
+					newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
 
-		population.setGenotypes(newPopulation)
-		print "Rozmiar po selekcji turniejowej: "+str(len(population.getGenotypes()))
+				tempPopulation.append(newGen)
+			selectionPopulation.append(self.best(tempPopulation))
+
+		return selectionPopulation
+
 
