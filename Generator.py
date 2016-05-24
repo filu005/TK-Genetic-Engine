@@ -21,8 +21,20 @@ class Generator:
   random=Random()
   genotypes=[]
   
+  xCenter=random.uniform(min, max)
+  yCenter=random.uniform(min, max)
+  
   for x in range(0, size):
-   genotypes.append(Genotype([random.uniform(min, max),random.uniform(min, max)]))
+   y=None
+   x=None
+   while x==None or x<min or x>max:
+    x=xCenter*random.random()*max/5-min/5
+
+   while y==None or y<min or y>max:
+    y=yCenter*random.random()*max/5-min/5
+
+   
+   genotypes.append(Genotype([x,y]))
   
   
   population.setSize(size)

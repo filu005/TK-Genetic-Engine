@@ -45,22 +45,20 @@ if __name__ == "__main__":
 	population=generator.generate(population, "x+y", 100, -30., 30.)
     #population.printPopulation()
     
-	generator.setRastrigin(population)
-    #generator.setRosenbrock(population)
+    #generator.setRastrigin(population)
+	generator.setRosenbrock(population)
 
-    
-	while stop_condition.stop(population) == False:
-		evaluation.evaluation(population)
+	evaluation.evaluation(population)
 
+for i in xrange(0, 5):
+		
 #print "old"
 #population.printPopulation()
-
-		selection.roulette(population)
 		newGenotypes=[]
 		for pos in range(0, population.getSize()/2):
             #populacja, rozmiar po selekcji, rozmiar losowanych jednostek ( z nich bedzie brany najlepszy i dodawany do nowej populacji)
-            #selectionPopulation=selection.tournaroulettement(population, 5, 10)
-			selectionPopulation=selection.roulette(population)
+			selectionPopulation=selection.tournament(population, 5, 10)
+            #selectionPopulation=selection.roulette(population)
 			newTwoGenotypes=crossover.crossover(population, selectionPopulation, 0.5)
 			newGenotypes.append(newTwoGenotypes[0])
 			newGenotypes.append(newTwoGenotypes[1])
@@ -68,5 +66,5 @@ if __name__ == "__main__":
 		population.setGenotypes(newGenotypes)
 		mutation.mutation(population, 0.1, 0.6)
 
-#print "new"
-#population.printPopulation()
+		print "new"
+		population.printPopulation()

@@ -12,12 +12,11 @@ class Selection(Operator):
 		best=population[0].getFitness()
 
 		for genotype in population:
-			if genotype.getFitness()<best:
+			if genotype.getFitness()>best:
 				best=genotype.getFitness()
 				bestPos=pos
 
 			pos=pos+1
-
 		return population[bestPos]
 
 	def minimum(self, population):

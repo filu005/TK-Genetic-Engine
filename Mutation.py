@@ -10,14 +10,19 @@ class Mutation(Operator):
                 x=genotype.getValue()[0]
                 y=genotype.getValue()[1]
                 
-                xGen=x+float(pm-np.random.randn())*x
-                yGen=y+float(pm-np.random.randn())*y
+                xGen=x*pm+float(pm-np.random.randn())*x
+                yGen=y*pm+float(pm-np.random.randn())*y
 
 
                 if xGen<population.getMin():
                     xGen=population.getMin()
                 elif xGen>population.getMax():
                     xGen=population.getMax()
+                
+                if yGen<population.getMin():
+                    yGen=population.getMin()
+                elif yGen>population.getMax():
+                    yGen=population.getMax()
 
                 genotype.setValue([xGen, yGen])
 

@@ -54,6 +54,19 @@ class Population:
             print "Genotyp: "+str(self.getGenotypes()[x].getValue())
             print "Wartosc fitness: "+str(self.getGenotypes()[x].getFitness())
 
+    def best(self, population):
+        pos=0
+        bestPos=0
+        best=population[0].getFitness()
+                
+        for genotype in population:
+            if genotype.getFitness()<best:
+                best=genotype.getFitness()
+                bestPos=pos
+                        
+            pos=pos+1
+        return population[bestPos]
+
         
     # returns finds genotype with highest fitness
     def getBestGenotype():
