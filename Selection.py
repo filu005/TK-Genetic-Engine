@@ -3,8 +3,28 @@ from random import Random
 from Operator import *
 
 class Selection(Operator):
+	def __init__(self, newSize=None, probeSize=None):
+		self.newSize = newSize;
+		self.probeSize = probeSize;
+
 	def operate(self, population):
-		print "selection" + " in population " + population
+		selectionPopulation=[]
+		random = Random()
+
+		if (self.newSize>=len(population.getGenotypes())):
+			return population.getGenotypes()
+
+		for x in xrange(0,self.newSize):
+			tempPopulation=[]
+			for y in xrange(0,self.probeSize):
+				newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
+				while newGen in selectionPopulation:
+					newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
+
+				tempPopulation.append(newGen)
+			selectionPopulation.append(self.best(tempPopulation))
+
+		return selectionPopulation
 
 	def best(self, population):
 		pos=0
@@ -40,30 +60,8 @@ class Selection(Operator):
 		worstValue=self.minimum(population)
 		sumValue=self.sum(population)
 		selectionPopulation=[]
-        
+
 		for genotype in population.getGenotypes():
 			if random.uniform(0, 1)<=(worstValue-genotype.getFitness()+1)/(sumValue+1):
 				selectionPopulation.append(genotype)
 		return selectionPopulation
-                
-                
-	def tournament(self, population, newSize, probeSize):
-		selectionPopulation=[]
-		random = Random()
-        
-		if (newSize>=len(population.getGenotypes())):
-			return population.getGenotypes()
-
-		for x in xrange(0,newSize):
-			tempPopulation=[]
-			for y in xrange(0,probeSize):
-				newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
-				while newGen in selectionPopulation:
-					newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
-
-				tempPopulation.append(newGen)
-			selectionPopulation.append(self.best(tempPopulation))
-
-		return selectionPopulation
-
-

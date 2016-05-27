@@ -2,7 +2,9 @@ from Operator import *
 import math
 
 class Evaluation(Operator):
-	def evaluation(self, population):
+	# def __init__(self):
+
+	def operate(self, population):
 		print("Ocena osobnikow")
 
 		for genotype in population.getGenotypes():

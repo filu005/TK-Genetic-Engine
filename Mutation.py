@@ -2,23 +2,27 @@ from Operator import *
 import numpy as np
 
 class Mutation(Operator):
+    def __init__(self, prob=None, pm=None):
+        self.prob = prob;
+        self.pm = pm;
+
     # pm - wspolczynnik mutacji (0.6 np)
-    def mutation(self, population, prob, pm):
+    def operate(self, population):
         print "mutation"
         for genotype in population.getGenotypes():
-            if prob>=np.random.random():
+            if self.prob>=np.random.random():
                 x=genotype.getValue()[0]
                 y=genotype.getValue()[1]
-                
-                xGen=x*pm+float(pm-np.random.randn())*x
-                yGen=y*pm+float(pm-np.random.randn())*y
+
+                xGen=x*self.pm+float(self.pm-np.random.randn())*x
+                yGen=y*self.pm+float(self.pm-np.random.randn())*y
 
 
                 if xGen<population.getMin():
                     xGen=population.getMin()
                 elif xGen>population.getMax():
                     xGen=population.getMax()
-                
+
                 if yGen<population.getMin():
                     yGen=population.getMin()
                 elif yGen>population.getMax():

@@ -16,27 +16,27 @@ class GeneticComponents(PythonConfig):
 
 	@Object
 	def generator(self):
-		return Generator()
+		return Generator("x+y", 100, -30.0, 30.0)
 
 	@Object
 	def stop_condition(self):
 		return StopCondition()
 
-	@Object
+	@Object(scope.SINGLETON, abstract=False)
 	def selection(self):
-		return Selection()
+		return Selection(5, 10)
 
-	@Object
+	@Object(scope.SINGLETON, abstract=False)
 	def evaluation(self):
 		return Evaluation()
 
-	@Object
+	@Object(scope.SINGLETON, abstract=False)
 	def crossover(self):
-		return Crossover()
+		return Crossover(pc=0.5) # pc - wspolczynnik krzyzowania
 
-	@Object
+	@Object(scope.SINGLETON, abstract=False)
 	def mutation(self):
-		return Mutation()
+		return Mutation(prob=0.1, pm=0.6)
 
 	@Object
 	def population(self):
