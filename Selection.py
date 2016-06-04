@@ -1,30 +1,42 @@
 from random import Random
+from copy import deepcopy
 
 from Operator import *
 
 class Selection(Operator):
-	def __init__(self, newSize=None, probeSize=None):
-		self.newSize = newSize;
-		self.probeSize = probeSize;
+	def __init__(self, tournamentSelectionSize=None):
+		self.tournamentSelectionSize = tournamentSelectionSize;
 
 	def operate(self, population):
 		selectionPopulation=[]
-		random = Random()
+		random=Random()
+		random.seed()
 
-		if (self.newSize>=len(population.getGenotypes())):
-			return population.getGenotypes()
+		# petla trwa dopoki nie osiagnieta zostanie nowa
+		# populacja o liczebnosci populacji identycznej do tej
+		# z ktorej wybierane sa osobniki (pop. z poprzedniej generacji).
+		# to taka symulacja petli do...until
+		while 1:
+			bestGenotype = None
+			bestFitness = 1000000
+			# losujemy tournamentSelectionSize wartosci
+			# do grupy turniejowej
+			for i in xrange(0,self.tournamentSelectionSize):
+				selection_idx = random.randint(0, population.getSize()-1)
+				if population.genotypes[selection_idx].fitness < bestFitness:
+					bestFitness = population.genotypes[selection_idx].fitness
+					bestGenotype = deepcopy(population.genotypes[selection_idx])
 
-		for x in xrange(0,self.newSize):
-			tempPopulation=[]
-			for y in xrange(0,self.probeSize):
-				newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
-				while newGen in selectionPopulation:
-					newGen=population.getGenotypes()[random.randint(0, len(population.getGenotypes())-1)]
+			# najlepszegpp zawodnika z grupy wsadzamy do
+			# nowej populacji
+			if bestGenotype != None:
+				selectionPopulation.append(bestGenotype)
 
-				tempPopulation.append(newGen)
-			selectionPopulation.append(self.best(tempPopulation))
+		# ...until
+			if len(selectionPopulation) == len(population.genotypes):
+				break
 
-		return selectionPopulation
+		population.setGenotypes(selectionPopulation)
 
 	def best(self, population):
 		pos=0
@@ -57,6 +69,7 @@ class Selection(Operator):
 	def roulette(self, population):
 		print "Selekcja ruletkowa"
 		random = Random()
+		random.seed()
 		worstValue=self.minimum(population)
 		sumValue=self.sum(population)
 		selectionPopulation=[]

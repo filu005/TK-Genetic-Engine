@@ -2,12 +2,10 @@ from Operator import *
 import math
 
 class Evaluation(Operator):
-	# def __init__(self):
-
 	def operate(self, population):
-		print("Ocena osobnikow")
-
-		for genotype in population.getGenotypes():
-			x=genotype.value[0]
-			y=genotype.value[0]
-			genotype.setFitness(eval(population.getFitness()))
+		# for genotype in population.getGenotypes():
+		for idx in xrange(0, population.getSize()):
+			x=population.genotypes[idx].value[0]
+			y=population.genotypes[idx].value[1]
+			# evaluate fitness value for every genotype
+			population.genotypes[idx].setFitness(eval(population.getFitnessFunction()))

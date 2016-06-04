@@ -15,6 +15,7 @@ class Population:
 			return_string += "Genotyp: " + str(self.getGenotypes()[x].getValue())
 			return_string += "\n"
 			return_string += "Wartosc fitness: " + str(self.getGenotypes()[x].getFitness())
+			return_string += "\n"
 		return return_string
 
 	def setId(self, id):
@@ -29,10 +30,10 @@ class Population:
 	def setSize(self, size):
 		self.size=size
 
-	def getFitness(self):
+	def getFitnessFunction(self):
 		return self.fitness
 
-	def setFitness(self, fitness, min, max):
+	def setFitnessFunction(self, fitness, min, max):
 		self.fitness=fitness
 		self.setMin(min)
 		self.setMax(max)
@@ -67,6 +68,12 @@ class Population:
 
 			pos=pos+1
 		return population[bestPos]
+
+	def meanFitness(self):
+		sumfit = 0.0
+		for genotype in self.genotypes:
+			sumfit = sumfit + genotype.getFitness()
+		return (sumfit / self.size)
 
 	# returns finds genotype with highest fitness
 	def getBestGenotype():

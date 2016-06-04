@@ -5,25 +5,26 @@ class Crossover(Operator):
 	def __init__(self, pc=None):
 		self.pc = pc
 
-	def operate(self, population, selection):
-		genotypesNew=[]
-		genotypes=population.getGenotypes()
-
-		print "Selekcja"
-
-		if self.pc>=np.random.random() and len(selection)>0:
-			genotypesNew.append(self.best(selection))
-			genotypesNew.append(self.second(selection))
-		else:
-			genotypesNew.append(genotypes[0])
-			genotypesNew.append(genotypes[1])
-
-
-		self.remove(genotypes, genotypesNew[0])
-		self.remove(genotypes, genotypesNew[1])
-
-		return genotypesNew
-
+	def operate(self, population):
+		for p1_idx in xrange(1, population.getSize()-1):
+			p2_idx=0
+			if p1_idx%2==0:
+				p2_idx=p1_idx-1
+			else:
+				p2_idx=p1_idx+1
+			# print p1_idx
+			# jesli bedzie crossover
+			if self.pc >= np.random.random():
+				# podmien wartosci x
+				if np.random.random() > 0.5:
+					temp=population.genotypes[p1_idx].getValue()[0]
+					population.genotypes[p1_idx].value[0] = population.genotypes[p2_idx].value[0]
+					population.genotypes[p2_idx].value[0]=temp
+				# podmien wartosci y
+				else:
+					temp=population.genotypes[p1_idx].value[1]
+					population.genotypes[p1_idx].value[1] = population.genotypes[p2_idx].value[1]
+					population.genotypes[p2_idx].value[1]=temp
 
 	def best(self, population):
 		pos=0

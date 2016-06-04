@@ -9,35 +9,40 @@ from Selection import *
 from Crossover import *
 from Mutation import *
 from Population import *
+from Functions import *
 
 class GeneticComponents(PythonConfig):
 	def __init__(self):
 		super(GeneticComponents, self).__init__()
 
+	# function - funkcja zddefiniowana jako implementacja klasy Function
+	# population_size - rozmiar populacji
 	@Object
 	def generator(self):
-		return Generator("x+y", 100, -30.0, 30.0)
+		return Generator(function=Rastrigin(-5.12, 5.12), population_size=50)
 
+	# diff_const - wspolczynnik roznicy sredniej funkcji dostosowania
+	# 	pomiedzy generacjami wymagany do zakonczenia algorytmu
 	@Object
 	def stop_condition(self):
-		return StopCondition()
+		return StopCondition(diff_const=0.001)
 
-	@Object(scope.SINGLETON, abstract=False)
+	# tournamentSelectionSize - ilosc osobnikow w grupie turniejowej
+	@Object(scope.SINGLETON)
 	def selection(self):
-		return Selection(5, 10)
+		return Selection(tournamentSelectionSize=10)
 
-	@Object(scope.SINGLETON, abstract=False)
+	@Object(scope.SINGLETON)
 	def evaluation(self):
 		return Evaluation()
 
-	@Object(scope.SINGLETON, abstract=False)
+	# pc - wspolczynnik krzyzowania
+	@Object(scope.SINGLETON)
 	def crossover(self):
-		return Crossover(pc=0.5) # pc - wspolczynnik krzyzowania
+		return Crossover(pc=0.02)
 
-	@Object(scope.SINGLETON, abstract=False)
+	# prob - prawdopodobienstwo mutacji
+	# pm - wspolczynnik mutacji
+	@Object(scope.SINGLETON)
 	def mutation(self):
-		return Mutation(prob=0.1, pm=0.6)
-
-	@Object
-	def population(self):
-		return Population()
+		return Mutation(prob=0.1, pm=0.01)

@@ -1,4 +1,5 @@
 from Operator import *
+from random import Random
 import numpy as np
 
 class Mutation(Operator):
@@ -6,17 +7,20 @@ class Mutation(Operator):
         self.prob = prob;
         self.pm = pm;
 
-    # pm - wspolczynnik mutacji (0.6 np)
     def operate(self, population):
-        print "mutation"
-        for genotype in population.getGenotypes():
+        random=Random()
+        random.seed()
+        # for genotype in population.getGenotypes():
+        for idx in xrange(0, population.getSize()):
             if self.prob>=np.random.random():
-                x=genotype.getValue()[0]
-                y=genotype.getValue()[1]
+                x=population.genotypes[idx].getValue()[0]
+                y=population.genotypes[idx].getValue()[1]
 
-                xGen=x*self.pm+float(self.pm-np.random.randn())*x
-                yGen=y*self.pm+float(self.pm-np.random.randn())*y
+                # xGen=x*self.pm+float(self.pm-np.random.randn())*x
+                # yGen=y*self.pm+float(self.pm-np.random.randn())*y
 
+                xGen=x*random.uniform(1.0-self.pm, 1.0+self.pm)
+                yGen=y*random.uniform(1.0-self.pm, 1.0+self.pm)
 
                 if xGen<population.getMin():
                     xGen=population.getMin()
@@ -28,5 +32,5 @@ class Mutation(Operator):
                 elif yGen>population.getMax():
                     yGen=population.getMax()
 
-                genotype.setValue([xGen, yGen])
+                population.genotypes[idx].setValue([xGen, yGen])
 

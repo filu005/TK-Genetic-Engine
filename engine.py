@@ -3,26 +3,6 @@ from time import time
 from math import cos
 from math import pi
 
-class Engine:
-
-	xrange=None
-	yrange=None
-	function=None
-	population=[]
-
-	def setxrange(range):
-		self.xrange=range
-
-	def setyrange(range):
-		self.yrange=range
-
-	def setfunction(self, function, xrange, yrange):
-		print("Zmiana funckji fitnes na "+function)
-		self.function=function
-		self.xrange=xrange
-		self.yrange=yrange
-
-
 from springpython.context import ApplicationContext
 
 from GeneticComponents import *
@@ -39,23 +19,19 @@ if __name__ == "__main__":
 	mutation=applicationContext.get_object("mutation")
 
 	population=generator.generate()
-    #population.printPopulation()
-
-	# generator.setRosenbrock(population)
-
 	evaluation.operate(population)
 
-	for i in xrange(0, 5):
-		newGenotypes=[]
-		for pos in range(0, population.getSize()/2):
-            #populacja, rozmiar po selekcji, rozmiar losowanych jednostek ( z nich bedzie brany najlepszy i dodawany do nowej populacji)
-			selectionPopulation=selection.operate(population)
-			newTwoGenotypes=crossover.operate(population, selectionPopulation)
-			newGenotypes.append(newTwoGenotypes[0])
-			newGenotypes.append(newTwoGenotypes[1])
+	# print population.printPopulation()
 
-		population.setGenotypes(newGenotypes)
+	while stop_condition.stop(population) == False:
+		evaluation.operate(population)
+		selection.operate(population)
+		crossover.operate(population)
 		mutation.operate(population)
 
-		print "new"
-		print population.printPopulation()
+	# do drukowania poprawnych wynikow
+	# jeszcze raz licze fitness
+	evaluation.operate(population)
+	outs = "-- finish after " + repr(stop_condition.lapsed_iterations) + " iterations --"
+	print population.printPopulation()
+	print outs
