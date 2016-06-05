@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects xmlns="http://www.springframework.org/springpython/schema/objects/1.1"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/springpython/schema/objects/1.1
+               http://springpython.webfactional.com/schema/context/spring-python-context-1.1.xsd">
+
+    <object id="mutation" class="mutation.Mutation">
+		<!-- prawdopodobienstwo mutacji --> -->
+		<constructor-arg value="0.1"/>
+		<!-- wspolczynnik mutacji  -->
+		<constructor-arg value="0.01"/>
+    </object>
+
+    <object id="crossover" class="crossover.Crossover">
+		<!-- wspolczynnik krzyzowania -->
+		<constructor-arg value="0.02"/>
+    </object>
+
+    <object id="generator" class="generator.Generator">
+		<!-- funkcja zddefiniowana jako implementacja klasy Function -->
+		<constructor-arg value="Rastrigin()"/>
+		<!-- rozmiar populacji -->
+		<constructor-arg value="50"/>
+    </object>
+
+    <object id="evaluation" class="evaluation.Evaluation">
+    </object>
+
+    <object id="selection" class="selection.Selection">
+		<!-- ilosc osobnikow w grupie turniejowej -->
+		<constructor-arg value="10"/>
+    </object>
+
+    <object id="paramForIsland" class="paramForIsland.ParamForIsland">
+    </object>
+
+    <object id="migration" class="migration.Migration">
+    </object>
+
+    <object id="stop_condition" class="stop_condition.StopCondition">
+		<!-- wspolczynnik roznicy sredniej funkcji dostosowania
+	 		pomiedzy generacjami wymagany do zakonczenia algorytmu -->
+		<constructor-arg value="0.001"/>
+    </object>
+
+</objects>

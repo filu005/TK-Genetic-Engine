@@ -4,11 +4,12 @@ from math import cos
 from math import pi
 
 from springpython.context import ApplicationContext
+from springpython.config import XMLConfig
 
 from GeneticComponents import *
 
 if __name__ == "__main__":
-	applicationContext = ApplicationContext(GeneticComponents()) # albo XMLConfig("GeneticComponents.xml")
+	applicationContext = ApplicationContext(GeneticComponents()) # GeneticComponents() albo XMLConfig("GeneticComponents.xml")
 
 	generator = applicationContext.get_object("generator")
 	stop_condition = applicationContext.get_object("stop_condition")
